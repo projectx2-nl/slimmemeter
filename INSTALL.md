@@ -7,12 +7,12 @@ Slimmemeter:
 
 The process are controlled/monitored via [Supervisor: A Process Control system](http://supervisord.org/)
 
-###P1-data client installation
+### P1-data client installation
 ```shell script
 cd src && pip install -r requirements.txt
 ```
 
-###Prometheus installation
+### Prometheus installation
 - Download (and unpack) Prometheus ARMv6 binary from: https://prometheus.io/download/
 - Configure Prometheus to scrape the P1-data metrics (exposed on fixed port 8000)
 
