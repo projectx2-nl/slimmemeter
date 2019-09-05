@@ -45,6 +45,7 @@ Example p1data block
 import re
 import logging
 
+
 class P1DataMetrics(object):
 
     def __init__(self, raw):
@@ -53,7 +54,7 @@ class P1DataMetrics(object):
         self.metrics = {}
 
         tmp_metrics = [re.match('(^\\d+-\\d+:\\d+.\\d+.\\d+)(.*$)', entry) for entry in raw.split()]
-        tmp_metrics = [entry for entry in tmp_metrics if entry != None]
+        tmp_metrics = [entry for entry in tmp_metrics if entry is not None]
         for entry in tmp_metrics:
             self.metrics[entry.group(1)] = re.findall('\\(([\\w\\*\\.]*)\\)', entry.group(2))
 
@@ -65,11 +66,11 @@ class P1DataMetrics(object):
     def gas_eid(self):
         return self.metrics['0-1:96.1.0'][0]
 
-    def tarrif1_delivered_reading(self):
+    def tariff1_delivered_reading(self):
         value = self.metrics['1-0:1.8.1'][0].split('*')
         return float(value[0]), value[1]
 
-    def tarrif2_delivered_reading(self):
+    def tariff2_delivered_reading(self):
         value = self.metrics['1-0:1.8.2'][0].split('*')
         return float(value[0]), value[1]
 
@@ -96,4 +97,3 @@ class P1DataMetrics(object):
     def gas_delivered_reading(self):
         value = self.metrics['0-1:24.2.1'][1].split('*')
         return float(value[0]), value[1]
-    

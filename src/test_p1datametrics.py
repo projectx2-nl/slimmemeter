@@ -53,12 +53,12 @@ class TestP1DataMetrics(unittest.TestCase):
         eid = self.metrics.gas_eid()
         self.assertEqual(eid, '4730303235303033343137303833333136', 'invalid gas_eid')
 
-    def test_tarrif1_delivered_reading(self):
-        tariff = self.metrics.tarrif1_delivered_reading()
+    def test_tariff1_delivered_reading(self):
+        tariff = self.metrics.tariff1_delivered_reading()
         self.assertEqual(tariff, (458.330, 'kWh'), 'invalid tariff 1 delivered reading')
 
-    def test_tarrif2_delivered_reading(self):
-        tariff = self.metrics.tarrif2_delivered_reading()
+    def test_tariff2_delivered_reading(self):
+        tariff = self.metrics.tariff2_delivered_reading()
         self.assertEqual(tariff, (364.935, 'kWh'), 'invalid tariff 2 delivered reading')
 
     def test_tariff_indicator(self):
@@ -72,6 +72,7 @@ class TestP1DataMetrics(unittest.TestCase):
     def test_gas_delivered_reading(self):
         gas = self.metrics.gas_delivered_reading()
         self.assertEqual(gas, (528.862, 'm3'), 'invalid gas delivered reading')
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -2,16 +2,13 @@
 Receive P1-data from slimmemeter via UART and forward the P1-data AWS.
 """
 
-import os
 import sys
 import signal
 import logging
 
-from datetime import datetime
-
 from serial import Serial, EIGHTBITS, PARITY_NONE, STOPBITS_ONE
 
-#from influxdb import InfluxDBClient
+import prometheus_client as PrometheusClient
 from p1datametrics import P1DataMetrics
 
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -24,9 +21,22 @@ class P1DataClient(object):
         self.serial = Serial(serial, 115200,
                              bytesize=EIGHTBITS, parity=PARITY_NONE, stopbits=STOPBITS_ONE)
 
-        self.influx_client = InfluxDBClient(ssl=True, host='sm-data.zifzaf.com', port=8086,
-                                            username='p1dataclient', password='pRxyz456',
-                                            database='slimmemeterkast')
+        self.tariff1_delivered_reading_gauge = PrometheusClient.Gauge(
+            'tariff1_delivered_reading', 'tariff-1 delivered reading', ['elec_eid'])
+        self.tariff2_delivered_reading_gauge = PrometheusClient.Gauge(
+            'tariff2_delivered_reading', 'tariff-2 delivered reading', ['elec_eid'])
+        self.power_delivered_gauge = PrometheusClient.Gauge(
+            'power_delivered', 'Power delivered', ['elec_eid', 'tariff_indicator'])
+        self.l1_power_delivered_gauge = PrometheusClient.Gauge(
+            'l1_power_delivered', 'L1 Power delivered', ['elec_eid', 'tariff_indicator'])
+        self.l2_power_delivered_gauge = PrometheusClient.Gauge(
+            'l2_power_delivered', 'L2 Power delivered', ['elec_eid', 'tariff_indicator'])
+        self.l3_power_delivered_gauge = PrometheusClient.Gauge(
+            'l3_power_delivered', 'L3 Power delivered', ['elec_eid', 'tariff_indicator'])
+        self.gas_delivered_reading_gauge = PrometheusClient.Gauge(
+            'gas_delivered_reading', 'Gas delivered', ['gas_eid'])
+
+        PrometheusClient.start_http_server(8000)
 
     def receive(self):
         """receive p1 data"""
@@ -48,44 +58,42 @@ class P1DataClient(object):
                     pass
 
     def store(self, metrics):
-        """store metrics in influxdb"""
-        now = str(datetime.now())
+        """expose metrics to prometheus"""
+        self.tariff1_delivered_reading_gauge.labels(
+            elec_eid=metrics.elec_eid()
+        ).set(metrics.tariff1_delivered_reading()[0])
 
-        points = [
-            {
-                'measurement': 'elec',
-                'tags': {
-                    'elec_eid': metrics.elec_eid()
-                },
-                'time': now,
-                'fields': {
-                    'tarrif1_delivered_reading': metrics.tarrif1_delivered_reading()[0],
-                    'tarrif2_delivered_reading': metrics.tarrif2_delivered_reading()[0],
-                    'tariff_indicator': metrics.tariff_indicator(),
-                    'power_delivered': metrics.power_delivered()[0],
-                    'l1_power_delivered': metrics.l1_power_delivered()[0],
-                    'l2_power_delivered': metrics.l2_power_delivered()[0],
-                    'l3_power_delivered': metrics.l3_power_delivered()[0]
-                }
-            },
-            {
-                'measurement': 'gas',
-                'tags': {
-                    'gas_eid': metrics.gas_eid()
-                },
-                'time': now,
-                'fields': {
-                    'gas_delivered_reading': metrics.gas_delivered_reading()[0]
-                }
-            }
-        ]
-        self.influx_client.write_points(points)
+        self.tariff2_delivered_reading_gauge.labels(
+            elec_eid=metrics.elec_eid()
+        ).set(metrics.tariff2_delivered_reading()[0])
 
-        logging.debug('stored p1data points:\n%s', points)
+        for tariff_indicator in [1, 2]:
+            self.power_delivered_gauge.labels(
+                elec_eid=metrics.elec_eid(),
+                tariff_indicator=tariff_indicator
+            ).set(metrics.power_delivered()[0] if tariff_indicator == metrics.tariff_indicator() else 0)
 
+            self.l1_power_delivered_gauge.labels(
+                elec_eid=metrics.elec_eid(),
+                tariff_indicator=tariff_indicator
+            ).set(metrics.l1_power_delivered()[0] if tariff_indicator == metrics.tariff_indicator() else 0)
+
+            self.l2_power_delivered_gauge.labels(
+                elec_eid=metrics.elec_eid(),
+                tariff_indicator=tariff_indicator
+            ).set(metrics.l2_power_delivered()[0] if tariff_indicator == metrics.tariff_indicator() else 0)
+
+            self.l3_power_delivered_gauge.labels(
+                elec_eid=metrics.elec_eid(),
+                tariff_indicator=tariff_indicator
+            ).set(metrics.l3_power_delivered()[0] if tariff_indicator == metrics.tariff_indicator() else 0)
+
+        self.gas_delivered_reading_gauge.labels(
+            gas_eid=metrics.elec_eid()
+        ).set(metrics.gas_delivered_reading()[0])
 
     def run(self):
-        """receive p1 data and post the data to the influxdb endpoint and again and again ..."""
+        """receive p1 data and expose the data and again and again ..."""
         while True:
             self.store(P1DataMetrics(self.receive()))
 
