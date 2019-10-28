@@ -9,6 +9,8 @@ The process are controlled/monitored via [Supervisor: A Process Control system](
 
 ### P1-data client installation
 ```shell script
+# if needed install pip for python version of Pi
+# sudp apt install python-pip
 cd src && pip install -r requirements.txt
 ```
 
