@@ -12,6 +12,7 @@ The process are controlled/monitored via [Supervisor: A Process Control system](
 # if needed install pip for python version of Pi
 # sudo apt install python-pip
 cd src && pip install -r requirements.txt
+sudo ln -s <src-dir> /opt/p1dataclient
 ```
 
 ### Prometheus installation
