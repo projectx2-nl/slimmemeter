@@ -7,6 +7,13 @@ Slimmemeter:
 
 The process are controlled/monitored via [Supervisor: A Process Control system](http://supervisord.org/)
 
+Overall functionality, i.e. 'slimmemeter' consists of 3 application
+- p1dataclient --> the p1-data 'collector'
+- prometheus --> stores the collected p1-data
+- grafana --> presents the stored p1-data
+
+The 3 applications are installed in /opt/<application> (logical link to /opt/<application>) managed with supervisord.
+
 ### P1-data client installation
 ```shell script
 # if needed install pip for python version of Pi
