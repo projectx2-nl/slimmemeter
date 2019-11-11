@@ -3,8 +3,9 @@
 
 ## The P1-data collection
 
-![P1-data reader schematics](https://raw.githubusercontent.com/pvdheijden/slimmemeter/master/doc/p1_connector-v2.png)
+![P1-data collector schematics](https://raw.githubusercontent.com/pvdheijden/slimmemeter/master/doc/p1_connector-v2.png)
 
+![P1-data collector assembled](https://raw.githubusercontent.com/pvdheijden/slimmemeter/master/doc/p1_connector_assembled.png)
 
 
 ## The P1-data presentation
