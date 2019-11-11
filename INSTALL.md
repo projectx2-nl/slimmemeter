@@ -18,7 +18,7 @@ The 3 applications are installed in /opt/<application> (logical link to /opt/<ap
 ```shell script
 # if needed install pip for python version of Pi
 # sudo apt install python-pip
-cd src && pip install -r requirements.txt
+cd src && sudo pip install --system -r requirements.txt
 sudo ln -s <src-dir> /opt/p1dataclient
 ```
 
