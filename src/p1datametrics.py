@@ -71,14 +71,14 @@ class P1DataMetrics(object):
             value = self.metrics['1-0:1.8.1'][0].split('*') 
             return float(value[0]), value[1]
         else:
-            return None
+            return None, None
 
     def tariff2_delivered_reading(self):
         if '1-0:1.8.2' in self.metrics:
             value = self.metrics['1-0:1.8.2'][0].split('*')
             return float(value[0]), value[1]
         else
-            return None
+            return None, None
 
     def tariff_indicator(self):
         return int(self.metrics['0-0:96.14.0'][0]) if '0-0:96.14.0' in self.metrics else None
@@ -88,32 +88,32 @@ class P1DataMetrics(object):
             value = self.metrics['1-0:1.7.0'][0].split('*')
             return float(value[0]), value[1]
         else:
-            return None
+            return None, None
 
     def l1_power_delivered(self):
         if '1-0:21.7.0' in self.metrics:
             value = self.metrics['1-0:21.7.0'][0].split('*')
             return float(value[0]), value[1]
         else:
-            return None
+            return None, None
 
     def l2_power_delivered(self):
         if '1-0:41.7.0' in self.metrics:
             value = self.metrics['1-0:41.7.0'][0].split('*')
             return float(value[0]), value[1]
         else:
-            return None
+            return None, None
 
     def l3_power_delivered(self):
         if '1-0:61.7.0' in self.metrics:
             value = self.metrics['1-0:61.7.0'][0].split('*')
             return float(value[0]), value[1]
         else:
-            return None
+            return None, None
 
     def gas_delivered_reading(self):
         if '0-1:24.2.1' in self.metrics:
             value = self.metrics['0-1:24.2.1'][1].split('*')
             return float(value[0]), value[1]
         else:
-            return None
+            return None, None
