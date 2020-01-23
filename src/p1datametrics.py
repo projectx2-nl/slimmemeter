@@ -61,39 +61,59 @@ class P1DataMetrics(object):
         logging.debug('parsed p1data:\n%s', str(self.metrics))
 
     def elec_eid(self):
-        return self.metrics['0-0:96.1.1'][0]
+        return self.metrics['0-0:96.1.1'][0] if '0-0:96.1.1' in self.metrics else None
 
     def gas_eid(self):
-        return self.metrics['0-1:96.1.0'][0]
+        return self.metrics['0-1:96.1.0'][0] if '0-1:96.1.0' in self.metrics else None
 
     def tariff1_delivered_reading(self):
-        value = self.metrics['1-0:1.8.1'][0].split('*')
-        return float(value[0]), value[1]
+        if '1-0:1.8.1' in self.metrics:
+            value = self.metrics['1-0:1.8.1'][0].split('*') 
+            return float(value[0]), value[1]
+        else:
+            return None
 
     def tariff2_delivered_reading(self):
-        value = self.metrics['1-0:1.8.2'][0].split('*')
-        return float(value[0]), value[1]
+        if '1-0:1.8.2' in self.metrics:
+            value = self.metrics['1-0:1.8.2'][0].split('*')
+            return float(value[0]), value[1]
+        else
+            return None
 
     def tariff_indicator(self):
-        value = self.metrics['0-0:96.14.0'][0]
-        return int(value)
+        return int(self.metrics['0-0:96.14.0'][0]) if '0-0:96.14.0' in self.metrics else None
 
     def power_delivered(self):
-        value = self.metrics['1-0:1.7.0'][0].split('*')
-        return float(value[0]), value[1]
+        if '1-0:1.7.0' in self.metrics:
+            value = self.metrics['1-0:1.7.0'][0].split('*')
+            return float(value[0]), value[1]
+        else:
+            return None
 
     def l1_power_delivered(self):
-        value = self.metrics['1-0:21.7.0'][0].split('*')
-        return float(value[0]), value[1]
+        if '1-0:21.7.0' in self.metrics:
+            value = self.metrics['1-0:21.7.0'][0].split('*')
+            return float(value[0]), value[1]
+        else:
+            return None
 
     def l2_power_delivered(self):
-        value = self.metrics['1-0:41.7.0'][0].split('*')
-        return float(value[0]), value[1]
+        if '1-0:41.7.0' in self.metrics:
+            value = self.metrics['1-0:41.7.0'][0].split('*')
+            return float(value[0]), value[1]
+        else:
+            return None
 
     def l3_power_delivered(self):
-        value = self.metrics['1-0:61.7.0'][0].split('*')
-        return float(value[0]), value[1]
+        if '1-0:61.7.0' in self.metrics:
+            value = self.metrics['1-0:61.7.0'][0].split('*')
+            return float(value[0]), value[1]
+        else:
+            return None
 
     def gas_delivered_reading(self):
-        value = self.metrics['0-1:24.2.1'][1].split('*')
-        return float(value[0]), value[1]
+        if '0-1:24.2.1' in self.metrics:
+            value = self.metrics['0-1:24.2.1'][1].split('*')
+            return float(value[0]), value[1]
+        else:
+            return None
