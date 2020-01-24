@@ -1,5 +1,5 @@
 """
-Receive P1-data from slimmemeter via UART and forward the P1-data AWS.
+Receive P1-data from slimmemeter via UART and store into Prometeus to be presented with Grafana.
 """
 
 import sys
