@@ -5,7 +5,6 @@ Latest version: 1.1.0
 
 ## The P1-data collection
 
-![P1-data collector schematics](https://raw.githubusercontent.com/pvdheijden/slimmemeter/master/doc/p1_connector.png)
 ![P1-data collector schematics](https://raw.githubusercontent.com/pvdheijden/slimmemeter/master/doc/p1_connector-opencollector.png)
 
 ![P1-data collector assembled](https://raw.githubusercontent.com/pvdheijden/slimmemeter/master/doc/p1_connector_assembled.jpg)
