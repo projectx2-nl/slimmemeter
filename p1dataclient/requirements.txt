@@ -1,3 +1,2 @@
 pyserial
-requests
 prometheus_client
