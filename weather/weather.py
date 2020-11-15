@@ -49,13 +49,13 @@ class TemperatureClient(object):
     def store(self, metrics):
         self.temperature_reading_gauge.labels(
             lat=self.lat, lon=self.lon
-        ).set(metrics.temp)
+        ).set(metrics[0])
         self.humidity_reading_gauge.labels(
             lat=self.lat, lon=self.lon
-        ).set(metrics.humidity)
+        ).set(metrics[1])
         self.pressure_reading_gauge.labels(
             lat=self.lat, lon=self.lon
-        ).set(metrics.pressure)
+        ).set(metrics[2])
 
     def run(self):
         while (True):
