@@ -14,21 +14,28 @@ import time
 
 import prometheus_client as PrometheusClient
 
+logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
+
 class TemperatureClient(object):
     def __init__(self):
+        self.lat = 51.685550
+        self.lon = 5.298640
+
         self.onecall_url = 'https://api.openweathermap.org/data/2.5/onecall'
         self.onecall_params = {
-            'lat': 51.685550,
-            'lon': 5.298640,
+            'lat': self.lat,
+            'lon': self.lon,
             'appid': 'e1a3a17c5355826f12a697385aed7530'
         }
 
-        self.temperture_gauge = PrometheusClient.Gauge(
+        self.temperature_reading_gauge = PrometheusClient.Gauge(
             'temperature_reading', 'temperature reading', ['lat', 'lon'])
-        self.humidity_gauge = PrometheusClient.Gauge(
+        self.humidity_reading_gauge = PrometheusClient.Gauge(
             'humidity_reading', 'humidity reading', ['lat', 'lon'])
-        self.pressure_gauge = PrometheusClient.Gauge(
+        self.pressure_reading_gauge = PrometheusClient.Gauge(
             'pressure_reading', 'pressure reading', ['lat', 'lon'])
+
+        PrometheusClient.start_http_server(8001)
 
     def fetch(self):
         data = requests.get(self.onecall_url, params=self.onecall_params).json()
@@ -64,5 +71,5 @@ if __name__ == '__main__':
 
     signal(SIGTERM, sigterm_handler)
 
-    logging.info('running temperature')
+    logging.info('running weather')
     TemperatureClient().run()
